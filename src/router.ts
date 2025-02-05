@@ -1,8 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router';
+import postsRoutes, { Routes as PostRoutesEnum } from '@/modules/Post/routes';
 
-import App from '@/App.vue';
-
-const routes = [{ path: '/', component: App }];
+const routes = [{ path: '/', redirect: PostRoutesEnum.Posts }, ...postsRoutes];
 
 const router = createRouter({
   history: createWebHistory(),

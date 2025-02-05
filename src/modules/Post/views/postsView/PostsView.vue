@@ -1,7 +1,5 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>
-    <RouterView />
-  </div>
+  <div>Posts page</div>
 </template>
