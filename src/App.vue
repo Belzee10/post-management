@@ -1,7 +1,7 @@
 <script setup lang="ts"></script>
 
 <template>
-  <div>
+  <main class="container h-screen w-full bg-background text-neutral mx-auto py-20">
     <RouterView />
-  </div>
+  </main>
 </template>
