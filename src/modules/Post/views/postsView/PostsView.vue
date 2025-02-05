@@ -4,19 +4,20 @@ import { fetchPosts, fetchAuthor } from '../../services/post.service';
 import { type Post } from '../../models';
 import logger from '@/core/utils/logger';
 import List from '@/core/components/list/List.vue';
+import ErrorBanner from '@/core/components/errorBanner/ErrorBanner.vue';
 
 interface PostState extends Post {
   author: string;
 }
 
 const error = ref<string>('');
-const laoding = ref<boolean>(false);
+const loading = ref<boolean>(false);
 
 const posts = ref<PostState[]>([]);
 
 const getPosts = async (): Promise<void> => {
   try {
-    laoding.value = true;
+    loading.value = true;
 
     const postsData = await fetchPosts();
     logger.info(`PostsView: Posts fetched successfully`);
@@ -39,7 +40,7 @@ const getPosts = async (): Promise<void> => {
     error.value = errorMsg;
     logger.error(`PostsView: ${errorMsg}`, err as Error);
   } finally {
-    laoding.value = false;
+    loading.value = false;
   }
 };
 
@@ -60,7 +61,13 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="h-full flex flex-col">
+  <div data-test="error-message" v-if="error" class="flex justify-center">
+    <ErrorBanner :message="error" />
+  </div>
+
+  <div data-test="loading" class="flex justify-center" v-else-if="loading">Loading posts...</div>
+
+  <div v-else class="h-full flex flex-col">
     <div class="shrink p-4">Posts page</div>
     <div class="grow h-full overflow-hidden">
       <List :headers="['id', 'title', 'body']" :rows="mappedPosts">
