@@ -1,0 +1,8 @@
+dist
+build
+.vscode
+.github
+node_modules
+coverage
+package-lock.json
+yarn.lock

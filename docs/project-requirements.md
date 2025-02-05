@@ -19,7 +19,7 @@ Note: You are free to use any additional libraries or tools that you see fit to 
 
 - Source code of the application
 - Hosted environment on GitHub Pages, Netlify, or Vercel
-    - CodeSandbox, Gitpod, or Stackblitz is also acceptable
+  - CodeSandbox, Gitpod, or Stackblitz is also acceptable
 - Brief explanation of the design decisions and additional technologies used
 
 Note: Please provide the URL to the GitHub repository containing your Vue.js application code as well as the hosted environment of your choice. Include relevant documentation or instructions on how to run the application locally if needed.
@@ -40,18 +40,18 @@ Note: Please provide the URL to the GitHub repository containing your Vue.js app
 
 ### API Endpoints
 
-* GET `/posts`
-	* Gets list of 100 posts
-* GET `/posts/{id}`
-	*  Gets a single post
-* POST `/posts`
-	* Adds a new post
-* PUT `/posts/{id}`
-	* Updates an existing post
-* DELETE `/posts/{id}`
-	* Deletes a post
-* GET `/users`
-	* Gets a list of 10 users 	
+- GET `/posts`
+  - Gets list of 100 posts
+- GET `/posts/{id}`
+  - Gets a single post
+- POST `/posts`
+  - Adds a new post
+- PUT `/posts/{id}`
+  - Updates an existing post
+- DELETE `/posts/{id}`
+  - Deletes a post
+- GET `/users`
+  - Gets a list of 10 users
 
 The Rest API endpoint is provided by [JSON Placeholder](https://jsonplaceholder.typicode.com/).
 
