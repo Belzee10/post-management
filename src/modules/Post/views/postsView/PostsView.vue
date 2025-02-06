@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { fetchPosts } from '../../services/post.service';
 import { fetchUser } from '@/core/services/user.service';
 import { type Post } from '../../models';
+import { debounce } from '@/core/utils/helpers';
 import logger from '@/core/utils/logger';
+
 import List from '@/core/components/list/List.vue';
 import ErrorBanner from '@/core/components/errorBanner/ErrorBanner.vue';
+import SearchInput from '@/core/components/searchInput/SearchInput.vue';
 
 interface PostState extends Post {
   author: string;
@@ -16,11 +19,21 @@ const loading = ref<boolean>(false);
 
 const posts = ref<PostState[]>([]);
 
-const getPosts = async (): Promise<void> => {
+const searchValue = ref('');
+
+const debouncedSearch = debounce((value: string) => {
+  getPosts(value);
+}, 300);
+
+watch(searchValue, (newValue) => {
+  debouncedSearch(newValue);
+});
+
+const getPosts = async (query?: string): Promise<void> => {
   try {
     loading.value = true;
 
-    const postsData = await fetchPosts();
+    const postsData = await fetchPosts({ title_like: query || '' });
     logger.info(`PostsView: Posts fetched successfully`);
 
     const userIds = new Set(postsData.map((post) => post.userId));
@@ -66,15 +79,20 @@ onMounted(() => {
     <ErrorBanner :message="error" />
   </div>
 
-  <div data-test="loading" class="flex justify-center" v-else-if="loading">Loading posts...</div>
-
   <div v-else class="h-full flex flex-col">
-    <div class="shrink p-4 flex">
-      <div class="grow">Search bar</div>
+    <div class="shrink py-4 flex">
+      <div class="grow">
+        <SearchInput
+          :value="searchValue"
+          placeholder="Search for post..."
+          @update:value="(value) => (searchValue = value)"
+        />
+      </div>
       <div class="shrink">Action buttons</div>
     </div>
     <div class="grow h-full overflow-hidden">
-      <List :headers="['id', 'title', 'body']" :rows="mappedPosts">
+      <div data-test="loading" class="flex justify-center" v-if="loading">Loading posts...</div>
+      <List v-else :headers="['id', 'title', 'body']" :rows="mappedPosts">
         <template #author="{ row }">
           {{ row.author }}
         </template>
